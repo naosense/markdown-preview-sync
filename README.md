@@ -25,11 +25,9 @@
 
 ### 安装方式
 
-如果你使用[pathogen](https://github.com/tpope/vim-pathogen)，将release中的`markdown-preview-sync-v1.0.zip`解压到bundle文件夹即可。
+如果你使用[pathogen](https://github.com/tpope/vim-pathogen)，将release中的`markdown-preview-sync.zip`解压到bundle文件夹即可。
 
-如果你没有使用任何插件管理工具，解压release中的`markdown-preview-sync-v1.0.zip`，然后将/autoload和/plugin目录中的文件分别放在Vim的/autoload和/plugin目录即可。
-
-注：/src目录是项目源代码，如果不关注直接删掉就可以了。
+如果你没有使用任何插件管理工具，解压release中的`markdown-preview-sync.zip`，然后将/autoload和/plugin目录中的文件分别放在Vim的/autoload和/plugin目录即可。
 
 ### 设置
 
@@ -69,11 +67,9 @@ autocmd filetype markdown nnoremap <S-F9> :MarkSyncClose<cr>
 
 ### Installation
 
-If you use [pathogen](https://github.com/tpope/vim-pathogen), do this: unzip release file `markdown-preview-sync-v1.0.zip` to bundle directory.
+If you use [pathogen](https://github.com/tpope/vim-pathogen), do this: unzip release file `markdown-preview-sync.zip` to bundle directory.
 
-If you don't use any plugin manager, just unzip release file `markdown-preview-sync-v1.0.zip`, then copy files in /autoload and /plugin to Vim's /autoload and /plugin directory.
-
-Note: /src directory is source code, you can simply delete it if you don't need it.
+If you don't use any plugin manager, just unzip release file `markdown-preview-sync.zip`, then copy files in /autoload and /plugin to Vim's /autoload and /plugin directory.
 
 ### Setting
 
