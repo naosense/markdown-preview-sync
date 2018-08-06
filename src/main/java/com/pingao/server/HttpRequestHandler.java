@@ -48,9 +48,9 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     private void index(ChannelHandlerContext ctx, FullHttpRequest request) {
         String html = FileUtils.readAsString(Main.ROOT_PATH + "/webapp/index.html");
         int index = html.indexOf("${theme}");
-        html = html.substring(0, index) + server.getTheme() +
-               html.substring(index + "${theme}".length());
-        commonResponse(ctx, request, FileUtils.getBytes(html), MiMeType.HTML);
+        String htmlWithTheme = html.substring(0, index) + server.getTheme() +
+                               html.substring(index + "${theme}".length());
+        commonResponse(ctx, request, FileUtils.getBytes(htmlWithTheme), MiMeType.HTML);
     }
 
     private void image(ChannelHandlerContext ctx, FullHttpRequest request) {

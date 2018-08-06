@@ -8,8 +8,9 @@
 import base64
 import socket
 
+
 SEP = '\r\n\r\n'
-EOF = '$_'
+EOF = '$_@'
 
 s = None
 

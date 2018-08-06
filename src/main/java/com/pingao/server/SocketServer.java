@@ -23,7 +23,7 @@ import java.net.InetSocketAddress;
 public class SocketServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
     private static final String SEP = "\r\n\r\n";
-    private static final ByteBuf EOF = Unpooled.copiedBuffer(FileUtils.getBytes("$_"));
+    private static final ByteBuf EOF = Unpooled.copiedBuffer(FileUtils.getBytes("$_@"));
 
     private MarkDownServer server;
 
@@ -33,15 +33,15 @@ public class SocketServer {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(group)
-             .channel(NioServerSocketChannel.class)
-             .localAddress(new InetSocketAddress(23789))
-             .childHandler(new ChannelInitializer<SocketChannel>() {
-                 @Override
-                 public void initChannel(SocketChannel ch) {
-                     ch.pipeline().addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, EOF));
-                     ch.pipeline().addLast(serverHandler);
-                 }
-             });
+                .channel(NioServerSocketChannel.class)
+                .localAddress(new InetSocketAddress(23789))
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, EOF));
+                        ch.pipeline().addLast(serverHandler);
+                    }
+                });
 
             ChannelFuture f = b.bind().sync();
             f.channel().closeFuture().sync();
@@ -58,17 +58,24 @@ public class SocketServer {
             String string = in.toString(CharsetUtil.UTF_8);
             LOGGER.info("Server received: " + string);
             String[] data = string.split(SEP);
-            if ("start".equals(data[0])) {
-                server = MarkDownServer.getInstance();
-                server.setTheme(data[2]);
-                server.start(Integer.parseInt(data[1]));
-            } else if ("sync".equals(data[0])) {
-                server.broadcast("sync", data[1], Base64Utils.decode2String(data[2]), Integer.parseInt(data[3]));
-            } else if ("close".equals(data[0])) {
-                server.broadcast("close", data[1], "", 1);
-            } else if ("stop".equals(data[0])) {
-                server.destroy();
-                System.exit(0);
+            switch (data[0]) {
+                case "start":
+                    server = MarkDownServer.getInstance();
+                    server.setTheme(data[2]);
+                    server.start(Integer.parseInt(data[1]));
+                    break;
+                case "sync":
+                    server.broadcast("sync", data[1], Base64Utils.decode2String(data[2]), Integer.parseInt(data[3]));
+                    break;
+                case "close":
+                    server.broadcast("close", data[1], "", 1);
+                    break;
+                case "stop":
+                    server.destroy();
+                    System.exit(0);
+                    break;
+                default:
+                    LOGGER.info("Command {} is unknown", data[0]);
             }
         }
 
