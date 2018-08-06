@@ -66,7 +66,7 @@ public class MarkDownServer {
         future.syncUninterruptibly();
         channel = future.channel();
         isRunning = true;
-        LOGGER.info("Markdown server is running...");
+        LOGGER.info("Markdown server is running on {} ...", channel.localAddress());
         return future;
     }
 
@@ -74,7 +74,7 @@ public class MarkDownServer {
         channel.close();
         channelGroup.close();
         group.shutdownGracefully();
-        LOGGER.info("Server shutdown success");
+        LOGGER.info("Markdown server shutdown success");
     }
 
     public boolean isRunning() {

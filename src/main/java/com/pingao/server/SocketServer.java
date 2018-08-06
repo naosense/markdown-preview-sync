@@ -44,6 +44,7 @@ public class SocketServer {
                 });
 
             ChannelFuture f = b.bind().sync();
+            LOGGER.info("Socket server is running on {} ...", f.channel().localAddress());
             f.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully().sync();
@@ -80,9 +81,8 @@ public class SocketServer {
         }
 
         @Override
-        public void exceptionCaught(ChannelHandlerContext ctx,
-                                    Throwable cause) {
-            cause.printStackTrace();
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            LOGGER.error("Error occurs cause", cause);
             ctx.close();
         }
     }
