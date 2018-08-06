@@ -27,11 +27,17 @@ plugin_root_dir = vim.eval('s:plugin_root_dir')
 python_root_dir = normpath(join(plugin_root_dir, 'python'))
 sys.path.insert(0, python_root_dir)
 import java_vim_bridge
-java_vim_bridge.set_port(vim.eval('g:markdown_preview_sync_port'))
 EOF
 
 function! s:start()
-    execute "silent !start /b java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar " . g:markdown_preview_sync_port . " " . g:markdown_preview_sync_theme
+    execute "silent !start /b java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar"
+    sleep 1
+
+python << EOF
+port = int(vim.eval('g:markdown_preview_sync_port'))
+theme = vim.eval('g:markdown_preview_sync_theme')
+java_vim_bridge.start(port, theme)
+EOF
 endfunction
 
 function! s:is_start()
@@ -98,33 +104,13 @@ function! s:trigger_sync()
     let l:new_current = line(".")
     let l:new_bottom = line("w$")
     let l:new_last = line("$")
-    if b:old_last ==# l:new_last
-        if b:old_bottom > l:new_bottom
-            if b:old_bottom - l:new_bottom >= 5
-                call s:sync()
-                let b:old_current = l:new_current
-                let b:old_bottom = l:new_bottom
-                let b:old_last = l:new_last
-            endif
-        elseif b:old_bottom < l:new_bottom
-            call s:sync()
-            let b:old_current = l:new_current
-            let b:old_bottom = l:new_bottom
-            let b:old_last = l:new_last
-        elseif b:old_current != l:new_current
-            call s:sync()
-            let b:old_current = l:new_current
-            let b:old_bottom = l:new_bottom
-            let b:old_last = l:new_last
-        endif
-    else
+
+    if b:old_current != l:new_current || b:old_bottom != l:new_bottom || b:old_last != l:new_last
         call s:sync()
         let b:old_current = l:new_current
         let b:old_bottom = l:new_bottom
         let b:old_last = l:new_last
     endif
-
-
 endfunction
 
 function! mpsync#preview()

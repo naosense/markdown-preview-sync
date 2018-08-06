@@ -6,35 +6,29 @@
 """
 
 import base64
+import socket
 
-try:
-    from urllib.parse import urlencode
-    from urllib.request import urlopen, Request
-except ImportError:
-    from urllib import urlencode
-    from urllib2 import urlopen, Request
+SEP = '\r\n\r\n'
+EOF = '$_'
 
-
-url_pre = 'http://127.0.0.1:port'
+s = None
 
 
-def set_port(port):
-    global url_pre
-    url_pre = url_pre.replace('port', port)
+def start(port, theme):
+    global s
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(('127.0.0.1', 23789))
+    s.send('start' + SEP + str(port) + SEP + theme + EOF)
 
 
 def sync(path, content, bottom):
-    params = {'path': path, 'content': base64.b64encode(content), 'bottom': bottom}
-    request = Request(url_pre + '/sync', data = urlencode(params))
-    urlopen(request)
+    s.send('sync' + SEP + path + SEP + base64.b64encode(content) + SEP + str(bottom) + EOF)
 
 
 def close(path):
-    params = {'path': path}
-    request = Request(url_pre + '/close?' + urlencode(params))
-    urlopen(request)
+    s.send('close' + SEP + path + EOF)
 
 
 def stop():
-    request = Request(url_pre + '/stop')
-    urlopen(request)
+    s.send('stop' + EOF)
+    s.close()

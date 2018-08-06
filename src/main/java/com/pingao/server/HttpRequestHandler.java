@@ -2,7 +2,6 @@ package com.pingao.server;
 
 import com.pingao.Main;
 import com.pingao.enums.MiMeType;
-import com.pingao.utils.Base64Utils;
 import com.pingao.utils.FileUtils;
 import com.pingao.utils.HtmlUtils;
 import io.netty.buffer.Unpooled;
@@ -41,12 +40,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             transferStaticFile(ctx, request);
         } else if (uri.startsWith("/image")) {
             image(ctx, request);
-        } else if (uri.startsWith("/sync")) {
-            sync(ctx, request);
-        } else if (uri.startsWith("/close")) {
-            close(ctx, request);
-        } else if (uri.startsWith("/stop")) {
-            stop(ctx, request);
         } else {
             commonResponse(ctx, request, FileUtils.getBytes("How do you do"), MiMeType.PLAIN);
         }
@@ -69,24 +62,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     private void transferStaticFile(ChannelHandlerContext ctx, FullHttpRequest request) {
         String path = Main.ROOT_PATH + "/webapp" + HtmlUtils.getRequestPath(request.uri());
         commonResponse(ctx, request, FileUtils.readAllBytes(path), HtmlUtils.getMiMeTypeByPath(path));
-    }
-
-    private void sync(ChannelHandlerContext ctx, FullHttpRequest request) {
-        Map<String, String> params = HtmlUtils.getParameters(request);
-        commonResponse(ctx, request, FileUtils.getBytes("success"), MiMeType.PLAIN);
-        server.broadcast("sync", params.get("path"),
-            Base64Utils.decode2String(params.get("content")), Integer.parseInt(params.get("bottom")));
-    }
-
-    private void close(ChannelHandlerContext ctx, FullHttpRequest request) {
-        Map<String, String> params = HtmlUtils.getParameters(request);
-        commonResponse(ctx, request, FileUtils.getBytes("success"), MiMeType.PLAIN);
-        server.broadcast("close", params.get("path"), "", 1);
-    }
-
-    private void stop(ChannelHandlerContext ctx, FullHttpRequest request) {
-        commonResponse(ctx, request, FileUtils.getBytes("success"), MiMeType.PLAIN);
-        System.exit(0);
     }
 
     private void commonResponse(ChannelHandlerContext ctx, FullHttpRequest request, byte[] bytes, MiMeType type) {

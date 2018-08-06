@@ -1,6 +1,6 @@
 package com.pingao;
 
-import com.pingao.server.MarkDownServer;
+import com.pingao.server.SocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,14 +25,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            throw new IllegalArgumentException("Please provide server port and theme");
+        try {
+            new SocketServer().start();
+        } catch (Exception e) {
+            LOGGER.error("Error occurs on socket server start", e);
         }
-
-        MarkDownServer server = MarkDownServer.getInstance();
-        server.start(Integer.parseInt(args[0]));
-        server.setTheme(args[1]);
-        Runtime.getRuntime().addShutdownHook(new Thread(server::destroy));
     }
 }
 
