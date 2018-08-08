@@ -57,6 +57,7 @@ public class SocketServer {
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             ByteBuf in = (ByteBuf) msg;
             String string = in.toString(CharsetUtil.UTF_8);
+            in.release();
             LOGGER.info("Server received: " + string);
             String[] data = string.split(SEP);
             switch (data[0]) {
