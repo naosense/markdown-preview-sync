@@ -30,8 +30,12 @@ import java_vim_bridge
 EOF
 
 function! s:start()
-    execute "silent !start /b java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar"
-    sleep 1
+    if has("win32")
+        execute "silent !start /b java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar"
+    else
+        execute "silent !java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar >/dev/null 2>&1 &"
+    endif
+    sleep 2
 
 python << EOF
 port = int(vim.eval('g:markdown_preview_sync_port'))
@@ -46,9 +50,17 @@ endfunction
 
 function! s:open()
     if exists("g:markdown_preview_sync_chrome_path")
-        execute "silent !start " . g:markdown_preview_sync_chrome_path . " --app=http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        if has("win32")
+            execute "silent !start " . g:markdown_preview_sync_chrome_path . " --app=http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        else
+            execute "silent !\"" . g:markdown_preview_sync_chrome_path . "\" --app=http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        endif
     elseif exists("g:markdown_preview_sync_firefox_path")
-        execute "silent !start " . g:markdown_preview_sync_firefox_path . " http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        if has("win32")
+            execute "silent !start " . g:markdown_preview_sync_firefox_path . " http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        else
+            execute "silent !\"" . g:markdown_preview_sync_firefox_path . "\" http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
+        endif
     else
         echoerr "Not set browser path"
     endif
