@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.pingao.model.MarkDownUnit;
 import com.pingao.model.WebSocketMsg;
 import com.pingao.utils.HtmlUtils;
-import com.pingao.utils.JsoupUtils;
+import com.pingao.utils.JSoupUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -87,7 +87,7 @@ public class MarkDownServer {
 
     public void broadcast(String command, String path, String content, int bottom) {
         String html = HtmlUtils.markdown2Html(HtmlUtils.plugBottomMarker(content, bottom));
-        List<MarkDownUnit> units = JsoupUtils.diff(path, html);
+        List<MarkDownUnit> units = JSoupUtils.diff(path, html);
         WebSocketMsg msg = new WebSocketMsg(command, path, units);
         String json = GSON.toJson(msg);
         channelGroup.writeAndFlush(new TextWebSocketFrame(json));

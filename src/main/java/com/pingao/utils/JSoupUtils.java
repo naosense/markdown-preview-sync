@@ -15,8 +15,8 @@ import java.util.*;
 /**
  * Created by pingao on 2018/7/21.
  */
-public class JsoupUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsoupUtils.class);
+public class JSoupUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSoupUtils.class);
 
     private static final Map<String, List<String>> HTML_CACHE = new HashMap<>();
     private static final Map<String, String> TOC_CACHE = new HashMap<>();
@@ -24,7 +24,7 @@ public class JsoupUtils {
     private static final List<String> HEADING_TAGS = Arrays.asList("h1", "h2", "h3", "h4", "h5", "h6");
 
     // Prevent instance
-    public JsoupUtils() {
+    public JSoupUtils() {
     }
 
     public static List<MarkDownUnit> diff(String path, String html) {
@@ -96,8 +96,11 @@ public class JsoupUtils {
             TOC_CACHE.put(path, newToc);
             //
         } else {
-            units.add(new MarkDownUnit("toc_container", Operate.REMOVE, "", 0));
-            TOC_CACHE.remove(path);
+            String oldToc = TOC_CACHE.get(path);
+            if (oldToc != null) {
+                units.add(new MarkDownUnit("toc_container", Operate.REMOVE, "", 0));
+                TOC_CACHE.remove(path);
+            }
         }
 
         return units;
