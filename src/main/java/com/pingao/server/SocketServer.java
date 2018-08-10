@@ -1,6 +1,5 @@
 package com.pingao.server;
 
-import com.pingao.utils.Base64Utils;
 import com.pingao.utils.FileUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -22,8 +21,8 @@ import java.net.InetSocketAddress;
  */
 public class SocketServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
-    private static final String SEP = "\r\n\r\n";
-    private static final ByteBuf EOF = Unpooled.copiedBuffer(FileUtils.getBytes("$_@"));
+    private static final String SEP = "__%#mpsync&@__";
+    private static final ByteBuf EOF = Unpooled.copiedBuffer(FileUtils.getBytes("\0"));
 
     private MarkDownServer server;
 
@@ -67,7 +66,7 @@ public class SocketServer {
                     server.start(Integer.parseInt(data[1]));
                     break;
                 case "sync":
-                    server.broadcast("sync", data[1], Base64Utils.decode2String(data[2]), Integer.parseInt(data[3]));
+                    server.broadcast("sync", data[1], data[2], Integer.parseInt(data[3]));
                     break;
                 case "close":
                     server.broadcast("close", data[1], "", 1);

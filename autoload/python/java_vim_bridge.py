@@ -9,8 +9,8 @@ import base64
 import socket
 
 
-SEP = '\r\n\r\n'
-EOF = '$_@'
+SEP = '__%#mpsync&@__'
+EOF = '\0'
 
 s = None
 
@@ -23,7 +23,7 @@ def start(port, theme):
 
 
 def sync(path, content, bottom):
-    s.send('sync' + SEP + path + SEP + base64.b64encode(content) + SEP + str(bottom) + EOF)
+    s.send('sync' + SEP + path + SEP + content + SEP + str(bottom) + EOF)
 
 
 def close(path):
