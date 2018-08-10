@@ -13,6 +13,10 @@ if !exists("g:markdown_preview_sync_port")
     let g:markdown_preview_sync_port = 7788
 endif
 
+if !exists("g:markdown_preview_sync_log_level")
+    let g:markdown_preview_sync_log_level = "WARN"
+endif
+
 if !exists("g:markdown_preview_sync_theme")
     let g:markdown_preview_sync_theme = "github"
 endif
@@ -31,11 +35,11 @@ EOF
 
 function! s:start()
     if has("win32")
-        execute "silent !start /b java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar"
+        execute 'silent !start /b java -jar -Dlog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar'
     else
-        execute "silent !java -jar \"" . s:plugin_root_dir . "\"/java/markdown-preview-sync.jar >/dev/null 2>&1 &"
+        execute 'silent !java -jar -Dlog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar >/dev/null 2>&1 &'
     endif
-    sleep 2
+    sleep 1
 
 python << EOF
 port = int(vim.eval('g:markdown_preview_sync_port'))
