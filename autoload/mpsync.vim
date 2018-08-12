@@ -39,7 +39,7 @@ function! s:start()
     else
         execute 'silent !java -jar -Dlog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar >/dev/null 2>&1 &'
     endif
-    sleep 1
+    sleep 2
 
 python << EOF
 port = int(vim.eval('g:markdown_preview_sync_port'))
