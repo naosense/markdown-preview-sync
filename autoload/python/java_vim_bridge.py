@@ -17,17 +17,20 @@ s = None
 
 
 def start(port, theme):
-    is_connect = False
+    is_connected = False
     connect_cnt = 0
-    while not is_connect and connect_cnt < MAX_CONN_TIMES:
+    while not is_connected and connect_cnt < MAX_CONN_TIMES:
         connect_cnt += 1
         try:
             _connect(port, theme)
         except Exception:
-            is_connect = False
+            is_connected = False
             time.sleep(0.1)
         else:
-            is_connect = True
+            is_connected = True
+
+    if not is_connected:
+        raise Exception('Connect fails!')
 
 
 def _connect(port, theme):
