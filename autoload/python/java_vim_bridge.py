@@ -9,7 +9,7 @@ import time
 import socket
 
 
-MAX_CONN_TIMES = 10
+MAX_CONN_TIMES = 5
 SEP = '__%#mpsync&@__'
 EOF = '\0'
 
@@ -25,7 +25,7 @@ def start(port, theme):
             _connect(port, theme)
         except Exception:
             is_connected = False
-            time.sleep(0.5)
+            time.sleep(1)
         else:
             is_connected = True
 
