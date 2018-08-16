@@ -9,6 +9,7 @@ import time
 import socket
 
 
+MAX_CONN_TIMES = 30
 SEP = '__%#mpsync&@__'
 EOF = '\0'
 
@@ -16,12 +17,17 @@ s = None
 
 
 def start(port, theme):
-    try:
-        _connect(port, theme)
-    except Exception as e:
-        print('Connect...')
-        time.sleep(1)
-        _connect(port, theme)
+    is_connect = False
+    connect_cnt = 0
+    while not is_connect and connect_cnt < MAX_CONN_TIMES:
+        connect_cnt += 1
+        try:
+            _connect(port, theme)
+        except Exception:
+            is_connect = False
+            time.sleep(0.1)
+        else:
+            is_connect = True
 
 
 def _connect(port, theme):
