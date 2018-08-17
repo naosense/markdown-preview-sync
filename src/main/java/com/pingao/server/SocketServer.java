@@ -10,8 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.util.CharsetUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pmw.tinylog.Logger;
 
 import java.net.InetSocketAddress;
 
@@ -20,7 +19,6 @@ import java.net.InetSocketAddress;
  * Created by pingao on 2018/8/5.
  */
 public class SocketServer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
     private static final String SEP = "__%#mpsync&@__";
     private static final ByteBuf EOF = Unpooled.copiedBuffer(FileUtils.getBytes("\0"));
 
@@ -43,7 +41,7 @@ public class SocketServer {
                 });
 
             ChannelFuture f = b.bind().sync();
-            LOGGER.info("Socket server is running on {} ...", f.channel().localAddress());
+            Logger.info("Socket server is running on {} ...", f.channel().localAddress());
             f.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully().sync();
@@ -57,7 +55,7 @@ public class SocketServer {
             ByteBuf in = (ByteBuf) msg;
             String string = in.toString(CharsetUtil.UTF_8);
             in.release();
-            LOGGER.info("Server received: " + string);
+            Logger.info("Server received: " + string);
             String[] data = string.split(SEP);
             switch (data[0]) {
                 case "start":
@@ -76,13 +74,13 @@ public class SocketServer {
                     System.exit(0);
                     break;
                 default:
-                    LOGGER.info("Command {} is unknown", data[0]);
+                    Logger.info("Command {} is unknown", data[0]);
             }
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-            LOGGER.error("Error occurs cause", cause);
+            Logger.error("Error occurs cause", cause);
             ctx.close();
         }
     }

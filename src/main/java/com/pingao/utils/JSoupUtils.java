@@ -6,8 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -16,8 +14,6 @@ import java.util.*;
  * Created by pingao on 2018/7/21.
  */
 public class JSoupUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JSoupUtils.class);
-
     private static final Map<String, List<String>> HTML_CACHE = new HashMap<>();
     private static final Map<String, String> TOC_CACHE = new HashMap<>();
 

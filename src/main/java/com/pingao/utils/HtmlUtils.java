@@ -13,8 +13,6 @@ import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,8 +22,6 @@ import java.util.*;
  * Created by pingao on 2018/7/13.
  */
 public class HtmlUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlUtils.class);
-
     private static final List<Extension> EXTENSIONS =
         Collections.singletonList(TablesExtension.create());
     private static final Parser PARSER = Parser.builder().extensions(EXTENSIONS).build();

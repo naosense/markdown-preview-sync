@@ -14,7 +14,7 @@ if !exists("g:markdown_preview_sync_port")
 endif
 
 if !exists("g:markdown_preview_sync_log_level")
-    let g:markdown_preview_sync_log_level = "WARN"
+    let g:markdown_preview_sync_log_level = "warning"
 endif
 
 if !exists("g:markdown_preview_sync_theme")
@@ -35,9 +35,9 @@ EOF
 
 function! s:start()
     if has("win32")
-        execute 'silent !start /b java -jar -Dlog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar'
+        execute 'silent !start /b java -jar -Dtinylog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar'
     else
-        execute 'silent !java -jar -Dlog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar >/dev/null 2>&1 &'
+        execute 'silent !java -jar -Dtinylog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar >/dev/null 2>&1 &'
     endif
 
 python << EOF

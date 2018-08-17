@@ -1,8 +1,7 @@
 package com.pingao;
 
 import com.pingao.server.SocketServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pmw.tinylog.Logger;
 
 import java.io.File;
 
@@ -11,7 +10,6 @@ import java.io.File;
  * Created by pingao on 2018/7/12.
  */
 public class Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     public static final String ROOT_PATH = resolveRootPath();
 
     private static String resolveRootPath() {
@@ -28,7 +26,7 @@ public class Main {
         try {
             new SocketServer().start();
         } catch (Exception e) {
-            LOGGER.error("Error occurs on socket server start", e);
+            Logger.error("Error occurs on socket server start", e);
         }
     }
 }

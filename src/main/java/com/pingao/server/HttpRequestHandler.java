@@ -10,8 +10,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pmw.tinylog.Logger;
 
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestHandler.class);
 
     private MarkDownServer server;
 
@@ -31,7 +29,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     @Override
     public void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) {
         String uri = request.uri();
-        LOGGER.info("Request uri {}", uri);
+        Logger.info("Request uri {}", uri);
         if (uri.startsWith("/index")) {
             index(ctx, request);
         } else if (uri.startsWith("/ws")) {
@@ -93,7 +91,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        LOGGER.error("Error occurs cause", cause);
+        Logger.error("Error occurs cause", cause);
         ctx.close();
     }
 }

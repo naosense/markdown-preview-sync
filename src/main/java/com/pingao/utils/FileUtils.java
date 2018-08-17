@@ -1,7 +1,6 @@
 package com.pingao.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,8 +14,6 @@ import java.util.stream.Collectors;
  * Created by pingao on 2018/8/3.
  */
 public class FileUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
-
     private FileUtils() {
     }
 
@@ -24,7 +21,7 @@ public class FileUtils {
         try {
             return Files.lines(Paths.get(path), Charset.forName("UTF-8")).collect(Collectors.joining("\n"));
         } catch (Exception e) {
-            LOGGER.error("Error occurs on reading content of {}", path, e);
+            Logger.error("Error occurs on reading content of {}", path, e);
         }
         return "";
     }
@@ -33,7 +30,7 @@ public class FileUtils {
         try {
             return Files.readAllBytes(Paths.get(path));
         } catch (IOException e) {
-            LOGGER.error("Error occurs on reading byte of {}", path, e);
+            Logger.error("Error occurs on reading byte of {}", path, e);
         }
         return new byte[0];
     }
@@ -42,7 +39,7 @@ public class FileUtils {
         try {
             return string.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Error occurs on get bytes of {}", string, e);
+            Logger.error("Error occurs on get bytes of {}", string, e);
         }
         return new byte[0];
     }

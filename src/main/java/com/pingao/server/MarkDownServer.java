@@ -16,16 +16,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.ImmediateEventExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pmw.tinylog.Logger;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 
 
 public class MarkDownServer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MarkDownServer.class);
-
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     private static MarkDownServer INSTANCE;
@@ -66,7 +63,7 @@ public class MarkDownServer {
         future.syncUninterruptibly();
         channel = future.channel();
         isRunning = true;
-        LOGGER.info("Markdown server is running on {} ...", channel.localAddress());
+        Logger.info("Markdown server is running on {} ...", channel.localAddress());
         return future;
     }
 
@@ -74,7 +71,7 @@ public class MarkDownServer {
         channel.close();
         channelGroup.close();
         group.shutdownGracefully();
-        LOGGER.info("Markdown server shutdown success");
+        Logger.info("Markdown server shutdown success");
     }
 
     public boolean isRunning() {
@@ -91,7 +88,7 @@ public class MarkDownServer {
         WebSocketMsg msg = new WebSocketMsg(command, path, units);
         String json = GSON.toJson(msg);
         channelGroup.writeAndFlush(new TextWebSocketFrame(json));
-        LOGGER.info("Broadcast bottom {} msg {} success", bottom, msg);
+        Logger.info("Broadcast bottom {} msg {} success", bottom, msg);
     }
 
     public static void main(String[] args) {
