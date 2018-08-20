@@ -1,5 +1,5 @@
 if !has("python") && !has("python3")
-    echo "vim has to be compiled with +python or +python3 to run this"
+    echo "Vim has to be compiled with +python or +python3 to run this"
     finish
 endif
 
@@ -66,6 +66,7 @@ function! s:open()
         endif
     else
         echoerr "Not set browser path"
+        finish
     endif
 endfunction
 
