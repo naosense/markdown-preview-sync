@@ -7,6 +7,11 @@ if exists("g:markdown_preview_sync_loaded")
     finish
 endif
 
+if !exists("g:markdown_preview_sync_chrome_path") && !exists("g:markdown_preview_sync_firefox_path")
+    echoerr "Not set browser path"
+    finish
+endif
+
 let g:markdown_preview_sync_loaded = 1
 
 if !exists("g:markdown_preview_sync_port")
@@ -64,9 +69,6 @@ function! s:open()
         else
             execute "silent !\"" . g:markdown_preview_sync_firefox_path . "\" http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
         endif
-    else
-        echoerr "Not set browser path"
-        finish
     endif
 endfunction
 
