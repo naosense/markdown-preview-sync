@@ -1,5 +1,5 @@
 if !has("python") && !has("python3")
-    echo "Vim has to be compiled with +python or +python3 to run this"
+    echoerr "Vim has to be compiled with +python or +python3 to run this"
     finish
 endif
 
