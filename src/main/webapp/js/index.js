@@ -104,11 +104,6 @@ $(function () {
     }
 
 
-    $(window).bind('beforeunload', function () {
-        ws.send('close,' + $('#path').val());
-    });
-
-
     self.mark_line = function (line) {
         if (ws !== null) {
             ws.send(line);

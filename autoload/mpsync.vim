@@ -70,6 +70,11 @@ function! s:open()
             execute "silent !\"" . g:markdown_preview_sync_firefox_path . "\" http://127.0.0.1:" . g:markdown_preview_sync_port . "/index"
         endif
     endif
+
+python <<EOF
+path = vim.eval('expand("%:p")')
+java_vim_bridge.open(path)
+EOF
 endfunction
 
 function! s:sync()

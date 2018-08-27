@@ -1,6 +1,7 @@
 package com.pingao.server;
 
 import com.pingao.utils.FileUtils;
+import com.pingao.utils.JSoupUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -62,6 +63,9 @@ public class SocketServer {
                     server = MarkDownServer.getInstance();
                     server.setTheme(data[2]);
                     server.start(Integer.parseInt(data[1]));
+                    break;
+                case "open":
+                    JSoupUtils.removeCache(data[1]);
                     break;
                 case "sync":
                     server.broadcast("sync", data[1], data[2], Integer.parseInt(data[3]));

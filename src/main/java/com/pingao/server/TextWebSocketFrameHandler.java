@@ -1,6 +1,5 @@
 package com.pingao.server;
 
-import com.pingao.utils.JSoupUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -28,8 +27,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     @Override
     public void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         msg.retain();
-        if (msg.text().contains("close")) {
-            JSoupUtils.removeCache(msg.text().split(",")[1]);
-        }
+        Logger.info("Received msg {}", msg.text());
     }
 }

@@ -40,6 +40,10 @@ def _connect(port, theme):
     s.send('start' + SEP + str(port) + SEP + theme + EOF)
 
 
+def open(path):
+    s.send('open' + SEP + path + EOF)
+
+
 def sync(path, content, bottom):
     s.send('sync' + SEP + path + SEP + content + SEP + str(bottom) + EOF)
 
