@@ -1,12 +1,55 @@
 [TOC]
 
-作为Vim粉丝一枚，一直在寻找一款好用的Markdown预览插件，功能要简单，能在书写之余偶尔撇一下效果即可，毕竟Markdown语法都烂熟于心了。先是偶然看到了Chrome一款插件[Markdown Viewer](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk)，风格非常喜欢，遗憾的是不能与Vim同步，后来又发现一款Vim插件[markdown-preview.vim](https://github.com/iamcco/markdown-preview.vim)，但是我装了好几次，在我的机器上老是报错。故事本来到此就结束了，但是程序猿乞肯如此轻易屈服，程序猿要让这天，再遮不住眼，要这地，再埋不了心，程序猿要用自己的双手开天辟地！经过程序猿在键盘上一顿猛干，[markdown-preview-sync](https://github.com/pingao777/markdown-preview-sync)横空出世了！好了，就吹到这吧。
-
-运行效果如下：
+## A quasi real-time vim markdown preview plugin
 
 ![snapshot-en](http://ozgrgjwvp.bkt.clouddn.com/markdown-preview-sync/en.png)
 
 ![snapshot-ch](http://ozgrgjwvp.bkt.clouddn.com/markdown-preview-sync/ch.png)
+
+### Feature
+
+- Code Highlight
+- MathJax
+- Custom CSS
+- GFM-Table
+- TOC
+
+### Prerequisite
+
+- Jre8 or above
+- Vim with python2 or python3 support
+
+### Installation
+
+If you use [pathogen](https://github.com/tpope/vim-pathogen), do this: unzip release file `markdown-preview-sync.zip` to bundle directory.
+
+If you don't use any plugin manager, just unzip release file `markdown-preview-sync.zip`, then copy files in /autoload and /plugin to Vim's /autoload and /plugin directory.
+
+### Setting
+
+```vim
+" Both Chrome and Firefox are good, but Chrome is prefer
+" Set Chrome path
+let g:markdown_preview_sync_chrome_path = ""
+
+" Set Firefox path
+let g:markdown_preview_sync_firefox_path = ""
+
+" (Optional)Set your own css theme, put your css file in
+" autoload/java/webapp/css directory with a name: name-theme.css,
+" then set
+let g:markdown_preview_sync_theme = "name"
+
+" Set key
+autocmd filetype markdown nnoremap <F9> :MarkSyncPreview<cr>
+autocmd filetype markdown nnoremap <S-F9> :MarkSyncClose<cr>
+```
+
+Last but not least, comments and issues are welcome.
+
+---
+
+## 一款准实时的Vim Markdown预览插件
 
 下面简单介绍下这款插件：
 
@@ -50,45 +93,4 @@ autocmd filetype markdown nnoremap <S-F9> :MarkSyncClose<cr>
 
 最后，欢迎大家多多提意见和建议。
 
----
-
-### Feature
-
-- Code Highlight
-- MathJax
-- Custom CSS
-- GFM-Table
-- TOC
-
-### Prerequisite
-
-- Jre8 or above
-- Vim with python2 or python3 support
-
-### Installation
-
-If you use [pathogen](https://github.com/tpope/vim-pathogen), do this: unzip release file `markdown-preview-sync.zip` to bundle directory.
-
-If you don't use any plugin manager, just unzip release file `markdown-preview-sync.zip`, then copy files in /autoload and /plugin to Vim's /autoload and /plugin directory.
-
-### Setting
-
-```vim
-" Both Chrome and Firefox are good, but Chrome is prefer
-" Set Chrome path
-let g:markdown_preview_sync_chrome_path = ""
-
-" Set Firefox path
-let g:markdown_preview_sync_firefox_path = ""
-
-" (Optional)Set your own css theme, put your css file in
-" autoload/java/webapp/css directory with a name: name-theme.css,
-" then set
-let g:markdown_preview_sync_theme = "name"
-
-" Set key
-autocmd filetype markdown nnoremap <F9> :MarkSyncPreview<cr>
-autocmd filetype markdown nnoremap <S-F9> :MarkSyncClose<cr>
-```
-
-Last but not least, comments and issues are welcome.
+后记：作为Vim粉丝一枚，一直在寻找一款好用的Markdown预览插件，功能要简单，能在书写之余偶尔撇一下效果即可，毕竟Markdown语法都烂熟于心了。先是偶然看到了Chrome一款插件[Markdown Viewer](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk)，风格非常喜欢，遗憾的是不能与Vim同步，后来又发现一款Vim插件[markdown-preview.vim](https://github.com/iamcco/markdown-preview.vim)，但是我装了好几次，在我的机器上老是报错。故事本来到此就结束了，但是程序猿乞肯如此轻易屈服，程序猿要让这天，再遮不住眼，要这地，再埋不了心，程序猿要用自己的双手开天辟地！经过程序猿在键盘上一顿猛干，[markdown-preview-sync](https://github.com/pingao777/markdown-preview-sync)横空出世了！好了，就吹到这吧。
