@@ -2,9 +2,9 @@
 
 ## A quasi real-time vim markdown preview plugin
 
-![snapshot-en](http://ozgrgjwvp.bkt.clouddn.com/markdown-preview-sync/en.png)
+![snapshot-en](https://wocanmei-hexo.nos-eastchina1.126.net/markdown-preview-sync/en.png)
 
-![snapshot-ch](http://ozgrgjwvp.bkt.clouddn.com/markdown-preview-sync/ch.png)
+![snapshot-ch](https://wocanmei-hexo.nos-eastchina1.126.net/markdown-preview-sync/ch.png)
 
 ### Feature
 
