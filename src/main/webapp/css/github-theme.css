@@ -576,6 +576,11 @@
     border: 1px solid #dfe2e5;
 }
 
+/*通常第一列不应该换行*/
+.markdown-body table td:nth-child(1) {
+    white-space: nowrap;
+}
+
 .markdown-body table tr {
     background-color: #fff;
     border-top: 1px solid #c6cbd1;
