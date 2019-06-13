@@ -7,6 +7,7 @@
 
 import time
 import socket
+import sys
 
 
 MAX_CONN_TIMES = 5
@@ -37,21 +38,32 @@ def _connect(port, theme):
     global s
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(('127.0.0.1', 23789))
-    s.send('start' + SEP + str(port) + SEP + theme + EOF)
+    s.sendall(wrap('start' + SEP + str(port) + SEP + theme + EOF))
 
 
 def open(path):
-    s.send('open' + SEP + path + EOF)
+    s.sendall(wrap('open' + SEP + path + EOF))
 
 
 def sync(path, content, bottom):
-    s.send('sync' + SEP + path + SEP + content + SEP + str(bottom) + EOF)
+    s.sendall(wrap('sync' + SEP + path + SEP + content + SEP + str(bottom) + EOF))
 
 
 def close(path):
-    s.send('close' + SEP + path + EOF)
+    s.sendall(wrap('close' + SEP + path + EOF))
 
 
 def stop():
-    s.send('stop' + EOF)
+    s.sendall(wrap('stop' + EOF))
     s.close()
+
+
+def version():
+    return sys.version_info[0]
+
+
+def wrap(data):
+    if version() == 2:
+        return data
+    elif version() == 3:
+        return data.encode()

@@ -26,9 +26,20 @@ if !exists("g:markdown_preview_sync_theme")
     let g:markdown_preview_sync_theme = "github"
 endif
 
+function! s:using_py3()
+  if has('python3')
+    return 1
+  endif
+    return 0
+endfunction
+
+let s:using_python3 = s:using_py3()
+let s:python_until_eof = s:using_python3 ? "python3 << EOF" : "python << EOF"
+let s:python_command = s:using_python3 ? "py3 " : "py "
+
 let s:plugin_root_dir = fnamemodify(resolve(expand("<sfile>:p")), ":h")
 
-python << EOF
+exec s:python_until_eof
 import sys
 from os.path import normpath, join
 import vim
@@ -45,7 +56,7 @@ function! s:start()
         execute 'silent !java -jar -Dtinylog.level="' . g:markdown_preview_sync_log_level . '" "' . s:plugin_root_dir . '"/java/markdown-preview-sync.jar >/dev/null 2>&1 &'
     endif
 
-python << EOF
+exec s:python_until_eof
 port = int(vim.eval('g:markdown_preview_sync_port'))
 theme = vim.eval('g:markdown_preview_sync_theme')
 java_vim_bridge.start(port, theme)
@@ -71,14 +82,14 @@ function! s:open()
         endif
     endif
 
-python <<EOF
+exec s:python_until_eof
 path = vim.eval('expand("%:p")')
 java_vim_bridge.open(path)
 EOF
 endfunction
 
 function! s:sync()
-python <<EOF
+exec s:python_until_eof
 path = vim.eval('expand("%:p")')
 content = vim.eval('join(getline(1, line("$")), "\n")')
 current = int(vim.eval('line(".")'))
@@ -91,14 +102,14 @@ EOF
 endfunction
 
 function! s:close()
-python <<EOF
+exec s:python_until_eof
 path = vim.eval('expand("%:p")')
 java_vim_bridge.close(path)
 EOF
 endfunction
 
 function! s:stop()
-python <<EOF
+exec s:python_until_eof
 path = vim.eval('expand("%:p")')
 java_vim_bridge.stop()
 EOF
