@@ -9,9 +9,20 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
+import io.netty.handler.codec.http.LastHttpContent;
 import org.pmw.tinylog.Logger;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -53,8 +64,18 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     private void image(ChannelHandlerContext ctx, FullHttpRequest request) {
         Map<String, String> params = HtmlUtils.getParameters(request);
-        String path = params.get("path");
-        commonResponse(ctx, request, FileUtils.readAllBytes(path), HtmlUtils.getMiMeTypeByPath(path));
+        String src = params.get("src");
+        String pa = "";
+        try {
+            pa = URLDecoder.decode(params.get("path"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Logger.error("Error occurs cause", e);
+        }
+        String dir = "";
+        if (!Files.exists(Paths.get(src))) {
+            dir = pa.substring(0, pa.lastIndexOf(".")) + "/";
+        }
+        commonResponse(ctx, request, FileUtils.readAllBytes(dir + src), HtmlUtils.getMiMeTypeByPath(src));
     }
 
     private void transferStaticFile(ChannelHandlerContext ctx, FullHttpRequest request) {

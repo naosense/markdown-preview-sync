@@ -6,8 +6,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.pmw.tinylog.Logger;
 
-import java.util.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -35,7 +42,7 @@ public class JSoupUtils {
             oldHtml = new ArrayList<>(elements.size());
             for (int i = 0; i < elements.size(); i++) {
                 Element element = elements.get(i);
-                transformLocalImgSrc(element);
+                transformLocalImgSrc(element, path);
                 String id = "element-" + i;
                 element.attr("id", id);
                 String content = element.outerHtml();
@@ -49,7 +56,7 @@ public class JSoupUtils {
 
             for (int i = 0; i < min; i++) {
                 Element element = elements.get(i);
-                transformLocalImgSrc(element);
+                transformLocalImgSrc(element, path);
                 String id = "element-" + i;
                 element.attr("id", id);
                 String content = element.outerHtml();
@@ -68,7 +75,7 @@ public class JSoupUtils {
             } else {
                 for (int i = min; i < max; i++) {
                     Element element = elements.get(i);
-                    transformLocalImgSrc(element);
+                    transformLocalImgSrc(element, path);
                     String id = "element-" + i;
                     element.attr("id", id);
                     String content = element.outerHtml();
@@ -134,16 +141,32 @@ public class JSoupUtils {
         return HEADING_TAGS.contains(element.tagName().toLowerCase());
     }
 
-    private static void transformLocalImgSrc(Element element) {
+    private static void transformLocalImgSrc(Element element, String path) {
         Elements images = element.select("img");
         for (Element img : images) {
             String src = img.attr("src");
-            if (!src.startsWith("http")) {
-                if (isWindows()) {
-                    img.attr("src", "/image?path=" + src.replace("\\", "\\\\"));
-                } else {
-                    img.attr("src", "/image?path=" + src);
+            try {
+                if (!src.startsWith("http")) {
+                    if (isWindows()) {
+                        img.attr(
+                            "src",
+                            "/image?src=" + src.replace("\\", "\\\\") + "&path=" + URLEncoder.encode(
+                                path,
+                                "UTF-8"
+                            )
+                        );
+                    } else {
+                        img.attr(
+                            "src",
+                            "/image?src=" + src + "&path=" + URLEncoder.encode(
+                                path,
+                                "UTF-8"
+                            )
+                        );
+                    }
                 }
+            } catch (UnsupportedEncodingException e) {
+                Logger.error("Error occurs cause", e);
             }
         }
     }
