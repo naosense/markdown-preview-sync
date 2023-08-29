@@ -10,7 +10,9 @@ public enum MiMeType {
     CSS("text/css; charset=UTF-8"),
     JSON("application/json; charset=UTF-8"),
     JPEG("image/jpeg"),
-    PNG("image/png");
+    PNG("image/png"),
+    SVG("image/svg+xml"),
+    ;
 
     private String type;
 

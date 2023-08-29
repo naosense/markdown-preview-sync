@@ -79,6 +79,8 @@ public class HtmlUtils {
             return MiMeType.JPEG;
         } else if (path.endsWith(".png")) {
             return MiMeType.PNG;
+        } else if (path.endsWith(".svg")) {
+            return MiMeType.SVG;
         } else {
             return MiMeType.PLAIN;
         }
